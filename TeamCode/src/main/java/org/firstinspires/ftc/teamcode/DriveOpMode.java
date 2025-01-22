@@ -1,21 +1,18 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.arcrobotics.ftclib.command.CommandOpMode;
+import com.arcrobotics.ftclib.drivebase.MecanumDrive;
+import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import org.firstinspires.ftc.teamcode.components.MecanumDrive;
+import org.firstinspires.ftc.teamcode.components.MecanumDriveProvider;
 
 @TeleOp(name = "Drive OpMode", group = "TeleOp Drive")
-public class DriveOpMode extends LinearOpMode {
-
+public class DriveOpMode extends CommandOpMode {
     @Override
-    public void runOpMode() {
-        MecanumDrive mecanumDrive = new MecanumDrive(hardwareMap);
+    public void initialize() {
+        AKRobot robot = new AKRobot(hardwareMap, gamepad1, gamepad2, telemetry);
 
-        waitForStart();
-
-        while (opModeIsActive()) {
-            mecanumDrive.joystickDrive(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
-        }
+        robot.initializeCommandOpMode();
     }
 }
