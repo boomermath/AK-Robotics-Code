@@ -15,6 +15,7 @@ public class AKRobot extends Robot {
     public final Slide slide;
     public final Claw claw;
     public final Wrist wrist;
+    public final Lift lift;
 
     private final GamepadEx player1Gamepad;
     private final GamepadEx player2Gamepad;
@@ -28,6 +29,7 @@ public class AKRobot extends Robot {
         this.slide = new Slide(hardwareMap);
         this.wrist = new Wrist(hardwareMap);
         this.claw = new Claw(hardwareMap);
+        this.lift = new Lift(hardwareMap);
 
         register(mecanumDrive, arm, slide, wrist, claw);
     }
@@ -52,6 +54,9 @@ public class AKRobot extends Robot {
 
         player1Gamepad.getGamepadButton(GamepadKeys.Button.B)
                 .toggleWhenPressed(claw.open(), claw.close());
+
+        player1Gamepad.getGamepadButton(GamepadKeys.Button.X)
+                .toggleWhenPressed(lift.lift(), lift.stop());
 
         new Trigger(() -> player1Gamepad.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) > 0)
                 .whenActive(arm.moveArm(-player1Gamepad.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER)));
