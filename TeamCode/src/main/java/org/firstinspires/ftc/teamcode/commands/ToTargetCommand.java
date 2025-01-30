@@ -2,11 +2,7 @@ package org.firstinspires.ftc.teamcode.commands;
 
 import com.arcrobotics.ftclib.command.CommandBase;
 import com.arcrobotics.ftclib.command.Subsystem;
-import com.arcrobotics.ftclib.hardware.motors.Motor;
 import org.firstinspires.ftc.teamcode.components.subsystem.Targetable;
-
-import java.util.Collections;
-import java.util.Set;
 
 public class ToTargetCommand<T extends Subsystem & Targetable> extends CommandBase {
     private final T targetSubsystem;
@@ -30,7 +26,7 @@ public class ToTargetCommand<T extends Subsystem & Targetable> extends CommandBa
 
     @Override
     public void end(boolean interrupted) {
-        targetSubsystem.stop();
+       targetSubsystem.stop();
     }
 
     public boolean isFinished() {

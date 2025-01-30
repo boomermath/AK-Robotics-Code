@@ -64,6 +64,6 @@ public class AKRobot extends Robot {
 //                .whenActive(arm.moveArm(player1Gamepad.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER)));
 
         player1Gamepad.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER)
-                .whenPressed(arm.moveArm(2));
+                .toggleWhenPressed(arm.targetTicks(130), arm.targetTicks(0));
     }
 }

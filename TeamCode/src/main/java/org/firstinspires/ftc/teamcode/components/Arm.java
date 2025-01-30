@@ -10,14 +10,13 @@ import org.firstinspires.ftc.teamcode.components.subsystem.Targetable;
 
 public class Arm implements Targetable {
     private final MotorEx armMotor;
-    private ArmFeedforward armFeedforward = new ArmFeedforward(0, 0, 0.4, 0.1);
-    private static final double TICKS_PER_DEGREE = 1.44;
+    private ArmFeedforward armFeedforward = new ArmFeedforward(0, 0.3, 0.4, 0.1);
+    private static final double TICKS_PER_DEGREE = 130 / 90.0;
 
     public Arm(HardwareMap hardwareMap) {
         armMotor = new MotorEx(hardwareMap, "arm_motor");
 
-        armMotor.resetEncoder();
-
+        armMotor.stopAndResetEncoder();
         armMotor.setPositionTolerance(3);
 
         armMotor.setInverted(true);
@@ -36,6 +35,19 @@ public class Arm implements Targetable {
         }, () -> armMotor.set(armFeedforward.calculate(armMotor.getCurrentPosition(), 0, 0)), this);
     }
 
+    @Override
+    public void stop() {
+        if (getMotor().getCurrentPosition() > 10) {
+            armMotor.setRunMode(Motor.RunMode.RawPower);
+            armMotor.set(0.2);
+        } else {
+            armMotor.stopMotor();
+        }
+    }
+
+    public void holdPosition(double target) {
+        armMotor.set(armFeedforward.calculate(Math.toRadians(target * TICKS_PER_DEGREE), 0, 0));
+    }
 
     @Override
     public Motor getMotor() {
@@ -44,6 +56,7 @@ public class Arm implements Targetable {
 
     @Override
     public void changePosition(double t) {
-        armMotor.set(armFeedforward.calculate(Math.toRadians(t * TICKS_PER_DEGREE), 2, 3));
+        double multiplier = t > armMotor.getCurrentPosition() ? 1 : -1;
+        armMotor.set(multiplier * armFeedforward.calculate(Math.toRadians(t * TICKS_PER_DEGREE), 2, 3));
     }
 }

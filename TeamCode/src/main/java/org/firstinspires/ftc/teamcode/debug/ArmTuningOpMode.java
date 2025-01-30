@@ -1,8 +1,6 @@
 package org.firstinspires.ftc.teamcode.debug;
 
-import com.arcrobotics.ftclib.command.CommandOpMode;
-import com.arcrobotics.ftclib.command.CommandScheduler;
-import com.arcrobotics.ftclib.command.RunCommand;
+import com.arcrobotics.ftclib.command.*;
 import com.arcrobotics.ftclib.controller.wpilibcontroller.ArmFeedforward;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
@@ -61,7 +59,7 @@ public class ArmTuningOpMode extends CommandOpMode {
                     .whenPressed(() -> values.computeIfPresent(selectedValue, (key, v) -> (v - 0.01)));
 
             driverGamepad.getGamepadButton(GamepadKeys.Button.A)
-                            .whenPressed(arm.targetTicks(60));
+                    .whenPressed(arm.targetTicks(60));
 
             driverGamepad.getGamepadButton(GamepadKeys.Button.DPAD_RIGHT)
                     .whenPressed(() -> {
@@ -81,12 +79,20 @@ public class ArmTuningOpMode extends CommandOpMode {
         Arm arm = new Arm(hardwareMap);
         GamepadEx driverGamepad = new GamepadEx(gamepad1);
 
+        driverGamepad.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER)
+                .whileHeld(new StartEndCommand(() -> {
+                    arm.getMotor().setRunMode(Motor.RunMode.RawPower);
+                    arm.getMotor().set(0.3);
+                }, () -> {
+                    arm.getMotor().set(0);
+                }));
+
         driverGamepad.getGamepadButton(GamepadKeys.Button.A)
                 .whenPressed(new ToTargetCommand<>(130, arm));
         driverGamepad.getGamepadButton(GamepadKeys.Button.X)
                 .whenPressed(() -> {
                     arm.getMotor().setRunMode(Motor.RunMode.RawPower);
-                    arm.getMotor().set(60);
+                    arm.getMotor().set(1);
                 });
 
         driverGamepad.getGamepadButton(GamepadKeys.Button.DPAD_DOWN)
