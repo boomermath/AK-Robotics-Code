@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.arcrobotics.ftclib.command.Robot;
-import com.arcrobotics.ftclib.command.button.Trigger;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.hardware.Gamepad;
@@ -12,10 +11,10 @@ import org.firstinspires.ftc.teamcode.components.*;
 public class AKRobot extends Robot {
     public final MecanumDriveProvider mecanumDrive;
     public final Arm arm;
-    public final Slide slide;
-    public final Claw claw;
-    public final Wrist wrist;
-    public final Lift lift;
+    //public final Slide slide;
+    //public final Claw claw;
+    //public final Wrist wrist;
+    //public final Lift lift;
 
     private final GamepadEx player1Gamepad;
     private final GamepadEx player2Gamepad;
@@ -26,12 +25,12 @@ public class AKRobot extends Robot {
 
         this.mecanumDrive = new MecanumDriveProvider(hardwareMap);
         this.arm = new Arm(hardwareMap);
-        this.slide = new Slide(hardwareMap);
-        this.wrist = new Wrist(hardwareMap);
-        this.claw = new Claw(hardwareMap);
-        this.lift = new Lift(hardwareMap);
+      //  this.slide = new Slide(hardwareMap);
+      //  this.wrist = new Wrist(hardwareMap);
+       // this.claw = new Claw(hardwareMap);
+      //  this.lift = new Lift(hardwareMap);
 
-        register(mecanumDrive, arm, slide, wrist, claw);
+        register(mecanumDrive, arm);
     }
 
     public void initializeCommandOpMode() {
@@ -43,25 +42,28 @@ public class AKRobot extends Robot {
                 )
         );
 
-        player1Gamepad.getGamepadButton(GamepadKeys.Button.DPAD_UP)
-                .whileHeld(slide.moveSlide(false));
+//        player1Gamepad.getGamepadButton(GamepadKeys.Button.DPAD_UP)
+//                .whileHeld(slide.moveSlide(false));
+//
+//        player1Gamepad.getGamepadButton(GamepadKeys.Button.DPAD_DOWN)
+//                .whileHeld(slide.moveSlide(true));
+//
+//        player1Gamepad.getGamepadButton(GamepadKeys.Button.A)
+//                .toggleWhenPressed(wrist.rotateBy(5), wrist.rotateBy(-5));
+//
+//        player1Gamepad.getGamepadButton(GamepadKeys.Button.B)
+//                .toggleWhenPressed(claw.open(), claw.close());
+//
+//        player1Gamepad.getGamepadButton(GamepadKeys.Button.X)
+//                .toggleWhenPressed(lift.lift(), lift.stop());
 
-        player1Gamepad.getGamepadButton(GamepadKeys.Button.DPAD_DOWN)
-                .whileHeld(slide.moveSlide(true));
+//        new Trigger(() -> player1Gamepad.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) > 0)
+//                .whenActive(arm.moveArm(-player1Gamepad.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER)));
+//
+//        new Trigger(() -> player1Gamepad.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) > 0)
+//                .whenActive(arm.moveArm(player1Gamepad.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER)));
 
-        player1Gamepad.getGamepadButton(GamepadKeys.Button.A)
-                .toggleWhenPressed(wrist.rotateBy(5), wrist.rotateBy(-5));
-
-        player1Gamepad.getGamepadButton(GamepadKeys.Button.B)
-                .toggleWhenPressed(claw.open(), claw.close());
-
-        player1Gamepad.getGamepadButton(GamepadKeys.Button.X)
-                .toggleWhenPressed(lift.lift(), lift.stop());
-
-        new Trigger(() -> player1Gamepad.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) > 0)
-                .whenActive(arm.moveArm(-player1Gamepad.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER)));
-
-        new Trigger(() -> player1Gamepad.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) > 0)
-                .whenActive(arm.moveArm(player1Gamepad.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER)));
+        player1Gamepad.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER)
+                .whenPressed(arm.moveArm(2));
     }
 }

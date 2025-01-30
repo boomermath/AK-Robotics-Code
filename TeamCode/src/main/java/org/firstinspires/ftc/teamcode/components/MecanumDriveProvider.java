@@ -20,9 +20,10 @@ public class MecanumDriveProvider extends SubsystemBase {
         MotorEx motorBackRight = new MotorEx(hardwareMap, "motor_back_right");
 
         motorFrontLeft.setInverted(true);
+        motorBackRight.setInverted(true);
         motorBackLeft.setInverted(true);
 
-        mecanumDrive = new MecanumDrive(motorFrontLeft, motorBackLeft, motorFrontRight, motorBackRight);
+        mecanumDrive = new MecanumDrive(false, motorFrontLeft, motorFrontRight, motorBackLeft, motorBackRight);
     }
 
     public Command driveCommand(Supplier<Double> strafe, Supplier<Double> forward, Supplier<Double> yaw) {

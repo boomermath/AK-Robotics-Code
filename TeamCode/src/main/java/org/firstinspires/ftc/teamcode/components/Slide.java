@@ -27,7 +27,7 @@ public class Slide extends SubsystemBase implements Targetable {
     }
 
     @Override
-    public void changePosition() {
+    public void changePosition(double t) {
         servo.set(DEFAULT_SERVO_SPEED);
     }
 

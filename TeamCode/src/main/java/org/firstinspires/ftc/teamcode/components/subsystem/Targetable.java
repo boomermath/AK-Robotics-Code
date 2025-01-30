@@ -14,16 +14,16 @@ public interface Targetable extends Subsystem {
         return getMotor().atTargetPosition();
     };
 
-    default void setPosition(double target) {
+    default void setPosition(int target) {
         getMotor().setRunMode(Motor.RunMode.PositionControl);
-        getMotor().set(target);
+        getMotor().setTargetPosition(target);
     };
 
-    void changePosition();
+    void changePosition(double t);
 
     Motor getMotor();
 
-    default Command target(double t) {
+    default Command targetTicks(int t) {
         return new ToTargetCommand<>(t, this);
     }
 }

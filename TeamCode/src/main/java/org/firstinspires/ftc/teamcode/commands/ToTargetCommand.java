@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.commands;
 
 import com.arcrobotics.ftclib.command.CommandBase;
 import com.arcrobotics.ftclib.command.Subsystem;
+import com.arcrobotics.ftclib.hardware.motors.Motor;
 import org.firstinspires.ftc.teamcode.components.subsystem.Targetable;
 
 import java.util.Collections;
@@ -9,9 +10,9 @@ import java.util.Set;
 
 public class ToTargetCommand<T extends Subsystem & Targetable> extends CommandBase {
     private final T targetSubsystem;
-    private final double target;
+    private final int target;
 
-    public ToTargetCommand(double target, T targetSubsystem) {
+    public ToTargetCommand(int target, T targetSubsystem) {
         this.targetSubsystem = targetSubsystem;
         this.target = target;
 
@@ -24,7 +25,7 @@ public class ToTargetCommand<T extends Subsystem & Targetable> extends CommandBa
     }
 
     public void execute() {
-        targetSubsystem.changePosition();
+        targetSubsystem.changePosition(target);
     }
 
     @Override
