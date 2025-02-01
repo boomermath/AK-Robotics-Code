@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.components.subsystem.Targetable;
 
 public class Arm implements Targetable {
     private final MotorEx armMotor;
-    private ArmFeedforward armFeedforward = new ArmFeedforward(0, 0.3, 0.4, 0.1);
+    private ArmFeedforward armFeedforward = new ArmFeedforward(0, 0.5, 0.4, 0.3);
     private static final double TICKS_PER_DEGREE = 130 / 90.0;
 
     public Arm(HardwareMap hardwareMap) {
@@ -57,6 +57,6 @@ public class Arm implements Targetable {
     @Override
     public void changePosition(double t) {
         double multiplier = t > armMotor.getCurrentPosition() ? 1 : -1;
-        armMotor.set(multiplier * armFeedforward.calculate(Math.toRadians(t * TICKS_PER_DEGREE), 2, 3));
+        armMotor.set(multiplier * armFeedforward.calculate(Math.toRadians(t * TICKS_PER_DEGREE), 4, 3));
     }
 }

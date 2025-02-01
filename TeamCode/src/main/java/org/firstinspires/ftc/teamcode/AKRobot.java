@@ -1,8 +1,10 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.arcrobotics.ftclib.command.Robot;
+import com.arcrobotics.ftclib.command.StartEndCommand;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
+import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -11,7 +13,7 @@ import org.firstinspires.ftc.teamcode.components.*;
 public class AKRobot extends Robot {
     public final MecanumDriveProvider mecanumDrive;
     public final Arm arm;
-    //public final Slide slide;
+    public final Slide slide;
     //public final Claw claw;
     //public final Wrist wrist;
     //public final Lift lift;
@@ -25,10 +27,10 @@ public class AKRobot extends Robot {
 
         this.mecanumDrive = new MecanumDriveProvider(hardwareMap);
         this.arm = new Arm(hardwareMap);
-      //  this.slide = new Slide(hardwareMap);
-      //  this.wrist = new Wrist(hardwareMap);
-       // this.claw = new Claw(hardwareMap);
-      //  this.lift = new Lift(hardwareMap);
+        this.slide = new Slide(hardwareMap);
+        //  this.wrist = new Wrist(hardwareMap);
+        // this.claw = new Claw(hardwareMap);
+        //  this.lift = new Lift(hardwareMap);
 
         register(mecanumDrive, arm);
     }
@@ -42,28 +44,26 @@ public class AKRobot extends Robot {
                 )
         );
 
-//        player1Gamepad.getGamepadButton(GamepadKeys.Button.DPAD_UP)
-//                .whileHeld(slide.moveSlide(false));
-//
-//        player1Gamepad.getGamepadButton(GamepadKeys.Button.DPAD_DOWN)
-//                .whileHeld(slide.moveSlide(true));
-//
-//        player1Gamepad.getGamepadButton(GamepadKeys.Button.A)
-//                .toggleWhenPressed(wrist.rotateBy(5), wrist.rotateBy(-5));
-//
-//        player1Gamepad.getGamepadButton(GamepadKeys.Button.B)
-//                .toggleWhenPressed(claw.open(), claw.close());
-//
-//        player1Gamepad.getGamepadButton(GamepadKeys.Button.X)
-//                .toggleWhenPressed(lift.lift(), lift.stop());
+        // set to max power while held, set to 0 when stopped
+        player1Gamepad.getGamepadButton(GamepadKeys.Button.A)
+                .whileHeld(new StartEndCommand(() -> {
+                    arm.getMotor().setRunMode(Motor.RunMode.RawPower);
+                    arm.getMotor().set(1);
+                }, () -> {
+                    arm.getMotor().set(0);
+                }));
 
-//        new Trigger(() -> player1Gamepad.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) > 0)
-//                .whenActive(arm.moveArm(-player1Gamepad.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER)));
-//
-//        new Trigger(() -> player1Gamepad.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) > 0)
-//                .whenActive(arm.moveArm(player1Gamepad.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER)));
+        // assuming .2 is enough holding power for now
+        player1Gamepad.getGamepadButton(GamepadKeys.Button.B)
+                .whileHeld(() -> {
+                    arm.getMotor().setRunMode(Motor.RunMode.RawPower);
+                    arm.getMotor().set(0.2);
+                });
 
-        player1Gamepad.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER)
-                .toggleWhenPressed(arm.targetTicks(130), arm.targetTicks(0));
+        player1Gamepad.getGamepadButton(GamepadKeys.Button.DPAD_UP)
+                .whileHeld(slide.extend());
+
+        player1Gamepad.getGamepadButton(GamepadKeys.Button.DPAD_DOWN)
+                .whileHeld(slide.retract());
     }
 }
